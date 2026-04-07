@@ -1,8 +1,12 @@
+import { Text, View } from "react-native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+
+import { useForm } from "react-hook-form";
+
 import { AppButton } from "@/components/AppButton";
 import { AppInput } from "@/components/AppInput";
-import { useForm } from "react-hook-form";
-import { Text, View } from "react-native";
 
+import { PublicStackParamsList } from "@/routes/PublicRoutes";
 export interface FormLoginParams {
   email: string;
   password: string;
@@ -14,6 +18,8 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<FormLoginParams>();
+
+  const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
 
   return (
     <>
@@ -38,7 +44,11 @@ export const LoginForm = () => {
 
         <View>
           <Text className="mb-6 text-gray-300 text-base">Ainda não possui uma conta?</Text>
-          <AppButton iconName="arrow-forward" mode="outline">
+          <AppButton
+            onPress={() => navigation.navigate("Register")}
+            iconName="arrow-forward"
+            mode="outline"
+          >
             Cadastrar
           </AppButton>
         </View>
