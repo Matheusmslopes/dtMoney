@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { useForm } from "react-hook-form";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,9 +7,13 @@ import { AppButton } from "@/components/AppButton";
 import { AppInput } from "@/components/AppInput";
 
 import { PublicStackParamsList } from "@/routes/PublicRoutes";
+import { useAuthContext } from "@/context/authContext";
+import { useErrorHandler } from "@/shared/hooks/useErrorHandler";
+
+import { colors } from "@/shared/colors";
 import { schema } from "./schema";
 
-interface FormRegisterParams {
+export interface FormRegisterParams {
   email: string;
   name: string;
   password: string;
@@ -31,9 +35,19 @@ export const RegisterForm = () => {
     resolver: yupResolver(schema),
   });
 
+  const { handleRegister } = useAuthContext();
+
+  const { handleError } = useErrorHandler();
+
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>();
 
-  const onSubmit = async () => {};
+  const onSubmit = async (userData: FormRegisterParams) => {
+    try {
+      await handleRegister(userData);
+    } catch (error) {
+      handleError(error, "Falha ao cadastrar usuário");
+    }
+  };
 
   return (
     <>
@@ -70,7 +84,7 @@ export const RegisterForm = () => {
 
       <View className="flex-1 justify-between mt-8 mb-6 min-h-[250px]">
         <AppButton onPress={handleSubmit(onSubmit)} iconName="arrow-forward">
-          Cadastrar
+          {isSubmitting ? <ActivityIndicator color={colors.white} /> : "Cadastrar"}
         </AppButton>
 
         <View>
