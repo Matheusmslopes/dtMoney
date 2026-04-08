@@ -5,8 +5,7 @@ import { AppError } from "../helpers/AppError";
 
 const baseURL = Platform.select({
   ios: "http://localhost:3001",
-  android: "http://192.168.1.4:3001",
-  //android: "http://MEUIP:3001",
+  android: "http://MEUIP:3001",
 });
 
 export const dtMoneyApi = axios.create({
