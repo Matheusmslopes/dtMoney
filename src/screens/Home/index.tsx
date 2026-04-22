@@ -1,4 +1,4 @@
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AppHeader } from "@/components/AppHeader";
@@ -11,7 +11,8 @@ import { TransactionCard } from "./TransactionCard";
 
 export const Home = () => {
   const { handleLogout } = useAuthContext();
-  const { fetchCategories, fetchTransactions, transactions } = useTransactionContext();
+  const { fetchCategories, fetchTransactions, transactions, refreshTransactions, loading } =
+    useTransactionContext();
   const { handleError } = useErrorHandler();
 
   const handleFetchCategories = async () => {
@@ -36,6 +37,7 @@ export const Home = () => {
         keyExtractor={({ id }) => `transaction-${id}`}
         renderItem={({ item }) => <TransactionCard transaction={item} />}
         className="bg-background-secondary"
+        refreshControl={<RefreshControl onRefresh={refreshTransactions} refreshing={loading} />}
       />
     </SafeAreaView>
   );

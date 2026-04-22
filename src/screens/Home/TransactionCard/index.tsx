@@ -8,6 +8,9 @@ import { format } from "date-fns";
 import { colors } from "@/shared/colors";
 import { TransactionTypes } from "@/shared/enums/transactionTypes";
 import clsx from "clsx";
+import { RightAction } from "./RightAction";
+import { LeftAction } from "./LeftAction";
+import { moneyMapper } from "@/shared/utils/moneyMapper";
 
 interface Params {
   transaction: Transaction;
@@ -17,7 +20,13 @@ export const TransactionCard: FC<Params> = ({ transaction }) => {
   const isExpense = transaction.type.id === TransactionTypes.EXPENSE;
 
   return (
-    <Swipeable containerStyle={styles.container}>
+    <Swipeable
+      containerStyle={styles.container}
+      renderRightActions={() => <RightAction transactionId={transaction.id} />}
+      overshootRight={false}
+      renderLeftActions={() => <LeftAction transaction={transaction} />}
+      overshootLeft={false}
+    >
       <View className="h=[140] bg-background-tertiary rounded-[6] p-6">
         <Text className="text-white text-base ">{transaction.description}</Text>
         <Text
@@ -26,7 +35,7 @@ export const TransactionCard: FC<Params> = ({ transaction }) => {
             isExpense ? "text-accent-red" : "text-accent-brand-light",
           )}
         >
-          {isExpense && "-"}R$ {transaction.value.toFixed(2).replace(".", ",")}
+          {isExpense && "-"}R$ {moneyMapper(transaction.value)}
         </Text>
         <View className="flex-row w-full justify-between items-center">
           <View className="items-center flex-row mt-3">
