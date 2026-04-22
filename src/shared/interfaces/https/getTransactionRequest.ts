@@ -19,3 +19,10 @@ export interface GetTransactionResponse {
   perPage: number;
   totalTransactions: TotalTransactions;
 }
+
+export interface Pagination {
+  page: number;
+  perPage: number;
+  totalRows?: number;
+  totalPages: number;
+}
