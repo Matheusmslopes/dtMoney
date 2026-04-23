@@ -26,3 +26,10 @@ export interface Pagination {
   totalRows?: number;
   totalPages: number;
 }
+
+export interface Filters {
+  from?: Date;
+  to?: Date;
+  typeId?: number;
+  categoryIds: Record<number, boolean>;
+}
